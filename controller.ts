@@ -2,19 +2,32 @@ import { Movie } from './model/Movie.ts'
 
 let movies: Array<Movie> = [{
     id: "1",
-    directed: "Robin Wieruch",
-    produced: "Me",
-    title: "The Road to React",
-  },{
-    id: "2",
-    directed: "Robin Wieruch",
-    produced: "Me",
-    title: "The Road to React",
-  },{
-    id: "3",
-    directed: "Robin Wieruch",
-    produced: "Me",
-    title: "The Road to React",
+    directed: "Anton Corbijn",
+    produced: [
+      {
+        name: "Anton Corbijn"
+      },
+      {
+        name: "Todd Eckert"
+      },
+      {
+        name: "Orian Williams"
+      },
+      {
+        name: "Iain Canning"
+      },
+      {
+        name: "Peter Heslop"
+      },
+      {
+        name: "Tony Wilson"
+      },
+      {
+        name: "Deborah Curtis"
+      },
+      
+    ],
+    title: "Control",
   }]
   
   const getMovies = ({ response }: { response: any }) => { 
@@ -44,7 +57,7 @@ let movies: Array<Movie> = [{
     let movie: Movie | undefined = searchBookByIsbn(params.id)
     if (movie) {
       const body = await request.body()
-      const updateInfos: { author?: string; directed?: string; produced?: string; title?: string;} = body.value
+      const updateInfos: { author?: string; directed?: string;  title?: string;} = body.value
       movie = { ...movie, ...updateInfos}
       movies = [...movies.filter(book => book.id !== params.id), movie]
       response.status = 200
@@ -61,7 +74,7 @@ let movies: Array<Movie> = [{
     response.status = 200
   }
   
-  /* return the book if found and undefined if not */
+
   const searchBookByIsbn = (isbn: string): ( Movie | undefined ) => movies.filter(book => book.id === isbn )[0]
   
   export { getMovies, getMovie, addMovie, updateMovie, deleteMovie }
