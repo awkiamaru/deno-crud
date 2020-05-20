@@ -1,5 +1,6 @@
-interface Movie {
+export interface Movie {
     id: string;
-    author: string;
+    directed: string;
+    produced: string;
     title: string;
   }

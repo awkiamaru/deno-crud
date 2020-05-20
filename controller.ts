@@ -1,53 +1,52 @@
-interface IBook {
-    isbn: string;
-    author: string;
-    title: string;
-  }
-  
-  let books: Array<IBook> = [{
-    isbn: "1",
-    author: "Robin Wieruch",
+import { Movie } from './model/Movie.ts'
+
+let movies: Array<Movie> = [{
+    id: "1",
+    directed: "Robin Wieruch",
+    produced: "Me",
     title: "The Road to React",
   },{
-    isbn: "2",
-    author: "Kyle Simpson",
-    title: "You Don't Know JS: Scope & Closures",
+    id: "2",
+    directed: "Robin Wieruch",
+    produced: "Me",
+    title: "The Road to React",
   },{
-    isbn: "3",
-    author: "Andreas A. Antonopoulos",
-    title: "Mastering Bitcoin",
+    id: "3",
+    directed: "Robin Wieruch",
+    produced: "Me",
+    title: "The Road to React",
   }]
   
-  const getBooks = ({ response }: { response: any }) => { 
-    response.body = books 
+  const getMovies = ({ response }: { response: any }) => { 
+    response.body = movies 
   }
   
-  const getBook = ({ params, response }: { params: { isbn: string }; response: any }) => {
-    const book: IBook | undefined = searchBookByIsbn(params.isbn)
-    if (book) {
+  const getMovie = ({ params, response }: { params: { id: string }; response: any }) => {
+    const movie: Movie | undefined = searchBookByIsbn(params.id)
+    if (movie) {
       response.status = 200
-      response.body = books[0]
+      response.body = movies[0]
     } else {
       response.status = 404
       response.body = { message: `Book not found.` }
     }   
   }
   
-  const addBook = async ({ request, response }: { request: any; response: any }) => {
+  const addMovie = async ({ request, response }: { request: any; response: any }) => {
     const body = await request.body()
-    const book: IBook = body.value  
-    books.push(book)
+    const movie: Movie = body.value  
+    movies.push(movie)
     response.body = { message: 'OK' }
     response.status = 200
   }
   
-  const updateBook = async ({ params, request, response }: { params: { isbn: string }; request: any; response: any }) => {
-    let book: IBook | undefined = searchBookByIsbn(params.isbn)
-    if (book) {
+  const updateMovie = async ({ params, request, response }: { params: { id: string }; request: any; response: any }) => {
+    let movie: Movie | undefined = searchBookByIsbn(params.id)
+    if (movie) {
       const body = await request.body()
-      const updateInfos: { author?: string; title?: string } = body.value
-      book = { ...book, ...updateInfos}
-      books = [...books.filter(book => book.isbn !== params.isbn), book]
+      const updateInfos: { author?: string; directed?: string; produced?: string; title?: string;} = body.value
+      movie = { ...movie, ...updateInfos}
+      movies = [...movies.filter(book => book.id !== params.id), movie]
       response.status = 200
       response.body = { message: 'OK' }
     } else {
@@ -56,13 +55,13 @@ interface IBook {
     }  
   }
   
-  const deleteBook = ({ params, response }: { params: { isbn: string }; response: any }) => {
-    books = books.filter(book => book.isbn !== params.isbn)
+  const deleteMovie = ({ params, response }: { params: { id: string }; response: any }) => {
+    movies = movies.filter(book => book.id !== params.id)
     response.body = { message: 'OK' }
     response.status = 200
   }
   
   /* return the book if found and undefined if not */
-  const searchBookByIsbn = (isbn: string): ( IBook | undefined ) => books.filter(book => book.isbn === isbn )[0]
+  const searchBookByIsbn = (isbn: string): ( Movie | undefined ) => movies.filter(book => book.id === isbn )[0]
   
-  export { getBooks, getBook, addBook, updateBook, deleteBook }
+  export { getMovies, getMovie, addMovie, updateMovie, deleteMovie }
