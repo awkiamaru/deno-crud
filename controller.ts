@@ -35,13 +35,13 @@ let movies: Array<Movie> = [{
   }
   
   const getMovie = ({ params, response }: { params: { id: string }; response: any }) => {
-    const movie: Movie | undefined = searchBookByIsbn(params.id)
+    const movie: Movie | undefined = searchMovieById(params.id)
     if (movie) {
       response.status = 200
       response.body = movies[0]
     } else {
       response.status = 404
-      response.body = { message: `Book not found.` }
+      response.body = { message: `Movie not found.` }
     }   
   }
   
@@ -54,27 +54,27 @@ let movies: Array<Movie> = [{
   }
   
   const updateMovie = async ({ params, request, response }: { params: { id: string }; request: any; response: any }) => {
-    let movie: Movie | undefined = searchBookByIsbn(params.id)
+    let movie: Movie | undefined = searchMovieById(params.id)
     if (movie) {
       const body = await request.body()
       const updateInfos: { author?: string; directed?: string;  title?: string;} = body.value
       movie = { ...movie, ...updateInfos}
-      movies = [...movies.filter(book => book.id !== params.id), movie]
+      movies = [...movies.filter(movie => movie.id !== params.id), movie]
       response.status = 200
       response.body = { message: 'OK' }
     } else {
       response.status = 404
-      response.body = { message: `Book not found` }
+      response.body = { message: `Movie not found` }
     }  
   }
   
   const deleteMovie = ({ params, response }: { params: { id: string }; response: any }) => {
-    movies = movies.filter(book => book.id !== params.id)
+    movies = movies.filter(movie => movie.id !== params.id)
     response.body = { message: 'OK' }
     response.status = 200
   }
   
 
-  const searchBookByIsbn = (isbn: string): ( Movie | undefined ) => movies.filter(book => book.id === isbn )[0]
+  const searchMovieById = (isbn: string): ( Movie | undefined ) => movies.filter(movie => movie.id === isbn )[0]
   
   export { getMovies, getMovie, addMovie, updateMovie, deleteMovie }
